@@ -60,20 +60,6 @@ init:
     Import-Module -Name .\AppVeyorHelpers -MinimumVersion 0.14.1
     popd
 - ps: Show-SystemInfo -LLVM -CMake -Curl -Ninja -Path
-- ps: |
-    if ('Ninja','MSBuild','MSBuild_Solution' -ccontains "$env:BUILDSYSTEM") {
-      Write-Output ('Build configuration: ' + $env:BUILDSYSTEM)
-    } else {
-      Send-Message -Error 'Unexpected or missing value for variable BUILDSYSTEM'
-    }
-    if (-not ('x64','x86' -ccontains "$env:PLATFORM") ) {
-      Send-Message -Error 'Unexpected or missing value for variable PLATFORM'
-    }
-    if (-not ('Debug','Release','LLVM_Debug','LLVM_Release' -ccontains `
-      "$env:CONFIGURATION")
-    ) {
-      Send-Message -Error 'Unexpected or missing value for CONFIGURATION'
-    }
 
 ##====--------------------------------------------------------------------====##
 ## Install tools and dependencies
