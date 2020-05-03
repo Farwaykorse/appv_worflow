@@ -16,18 +16,20 @@ environment:
   - job_name: 
     job_depends_on: *Depend
     BUILDSYSTEM: &Build_Ninja Ninja
-    configuration:
-    - Debug
-    - Release
-    - LLVM_Debug
-    - LLVM_Release
-    platform:
-    - x86
-    - x64
   - job_name: Second
     job_depends_on: *Depend
     BUILDSYSTEM: &Build_Solution MSBuild_Solution
     CONDITION: &MSBuild_cond_main main_branch_only
+
+configuration:
+- Debug
+- Release
+- LLVM_Debug
+- LLVM_Release
+
+platform:
+- x86
+- x64
 
 image:
 - Visual Studio 2019
