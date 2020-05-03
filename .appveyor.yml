@@ -45,10 +45,12 @@ for:
     on_build_success: false
 -
   matrix:
-    except:
+    only:
     - job_group: *Depend
   install:
-  - vcpkg list
+  - ps: Update-Vcpkg
+  build_script:
+  - vcpkg install ms-gsl:x64-windows ms-gel:x86-windows
 
 
 ##====--------------------------------------------------------------------====##
@@ -61,11 +63,6 @@ init:
 - ps: Show-SystemInfo -LLVM -CMake -Curl -Ninja -Path
 
 ##====--------------------------------------------------------------------====##
-## Install tools and dependencies
-install:
-- ps: Update-Vcpkg
-- vcpkg install ms-gsl:x64-windows ms-gel:x86-windows
-
 before_build:
 - cd %APPVEYOR_BUILD_FOLDER%
 
