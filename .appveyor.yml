@@ -9,6 +9,20 @@ cache:
 
 ##====-----------------
 ## Create_Matrix
+image:
+- Visual Studio 2019
+- Visual Studio 2017
+
+platform:
+- x86
+- x64
+
+configuration:
+- Debug
+- Release
+- LLVM_Debug
+- LLVM_Release
+
 environment:
   matrix:
   - job_name:  Build Library Dependencies
@@ -19,20 +33,6 @@ environment:
     job_depends_on: *Depend
     BUILDSYSTEM: &Build_Solution MSBuild_Solution
     CONDITION: &MSBuild_cond_main main_branch_only
-
-configuration:
-- Debug
-- Release
-- LLVM_Debug
-- LLVM_Release
-
-platform:
-- x86
-- x64
-
-image:
-- Visual Studio 2019
-- Visual Studio 2017
 
 for:
 -
