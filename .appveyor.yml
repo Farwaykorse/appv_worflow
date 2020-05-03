@@ -11,8 +11,9 @@ cache:
 ## Create_Matrix
 environment:
   matrix:
-  - job_name: &Depend Dependencies
-  - job_name: First
+  - job_name:  Build Library Dependencies
+    job_group: &Depend Dependencies
+  - job_name: 
     job_depends_on: *Depend
     BUILDSYSTEM: &Build_Ninja Ninja
   - job_name: Second
@@ -46,7 +47,7 @@ for:
 -
   matrix:
     except:
-    - job_name: *Depend
+    - job_group: *Depend
   install:
   - vcpkg list
 
