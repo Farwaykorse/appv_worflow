@@ -13,8 +13,7 @@ environment:
   matrix:
   - job_name:  Build Library Dependencies
     job_group: &Depend Dependencies
-  - job_name: 
-    job_depends_on: *Depend
+  - job_depends_on: *Depend
     BUILDSYSTEM: &Build_Ninja Ninja
   - job_name: Second
     job_depends_on: *Depend
