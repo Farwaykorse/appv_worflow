@@ -66,7 +66,6 @@ init:
 install:
 - ps: Update-Vcpkg
 - vcpkg install ms-gsl:%PLATFORM%-windows
-- vcpkg install gtest:%PLATFORM%-windows
 
 before_build:
 - cd %APPVEYOR_BUILD_FOLDER%
