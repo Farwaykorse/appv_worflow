@@ -64,7 +64,7 @@ init:
 ## Install tools and dependencies
 install:
 - ps: Update-Vcpkg
-- vcpkg install ms-gsl:%PLATFORM%-windows
+- vcpkg install ms-gsl:x64-windows ms-gel:x86-windows
 
 before_build:
 - cd %APPVEYOR_BUILD_FOLDER%
