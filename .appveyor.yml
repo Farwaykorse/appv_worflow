@@ -70,6 +70,6 @@ before_build:
 - cd %APPVEYOR_BUILD_FOLDER%
 
 build_script:
-- ps: vpckg list
+- vpckg list
 
 
