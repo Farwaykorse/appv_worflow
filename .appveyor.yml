@@ -51,7 +51,7 @@ for:
   install:
   - ps: Update-Vcpkg
   build_script:
-  - vcpkg install ms-gsl:x64-windows ms-gel:x86-windows
+  - vcpkg install ms-gsl:x64-windows ms-gsl:x86-windows
 
 
 ##====--------------------------------------------------------------------====##
