@@ -1,0 +1,90 @@
+##====---- appveyor.yml                                               ----====##
+version: "{build}"
+# fetch repository as a zip archive
+shallow_clone: true
+
+cache:
+- C:\Users\appveyor\Tools\cache\vcpkg
+- C:\Tools\vcpkg\installed
+
+##====-----------------
+## Create_Matrix
+image:
+- Visual Studio 2019
+- Visual Studio 2017
+
+platform:
+- x86
+- x64
+
+configuration:
+- Debug
+- Release
+- LLVM_Debug
+- LLVM_Release
+
+environment:
+  matrix:
+  - job_name: &Depend Dependencies
+  - job_name: First
+    job_depends_on: *Depend
+    BUILDSYSTEM: &Build_Ninja Ninja
+  - job_name: Second
+    job_depends_on: *Depend
+    BUILDSYSTEM: &Build_Solution MSBuild_Solution
+    CONDITION: &MSBuild_cond_main main_branch_only
+
+for:
+-
+  branches:
+    only:
+    - master
+  notifications:
+  - provider: Email
+    to: '{{committerEmail}}'
+    on_build_success: false
+-
+  matrix:
+    except:
+    - job_name: *Depend
+  install:
+  - vcpkg list
+
+
+##====--------------------------------------------------------------------====##
+init:
+- ps: |
+    New-Item -ItemType Directory -Force ~\tools | pushd
+    git clone https://github.com/Farwaykorse/AppVeyorHelpers.git --quiet
+    Import-Module -Name .\AppVeyorHelpers -MinimumVersion 0.14.1
+    popd
+- ps: Show-SystemInfo -LLVM -CMake -Curl -Ninja -Path
+- ps: |
+    if ('Ninja','MSBuild','MSBuild_Solution' -ccontains "$env:BUILDSYSTEM") {
+      Write-Output ('Build configuration: ' + $env:BUILDSYSTEM)
+    } else {
+      Send-Message -Error 'Unexpected or missing value for variable BUILDSYSTEM'
+    }
+    if (-not ('x64','x86' -ccontains "$env:PLATFORM") ) {
+      Send-Message -Error 'Unexpected or missing value for variable PLATFORM'
+    }
+    if (-not ('Debug','Release','LLVM_Debug','LLVM_Release' -ccontains `
+      "$env:CONFIGURATION")
+    ) {
+      Send-Message -Error 'Unexpected or missing value for CONFIGURATION'
+    }
+
+##====--------------------------------------------------------------------====##
+## Install tools and dependencies
+install:
+- ps: Update-Vcpkg
+- vcpkg install ms-gsl:%PLATFORM%-windows
+- vcpkg install gtest:%PLATFORM%-windows
+
+before_build:
+- cd %APPVEYOR_BUILD_FOLDER%
+
+build_script:
+- vpckg list
+
+
