@@ -13,23 +13,22 @@ image:
 - Visual Studio 2019
 - Visual Studio 2017
 
-platform:
-- x86
-- x64
-
-configuration:
-- Debug
-- Release
-- LLVM_Debug
-- LLVM_Release
-
 environment:
   matrix:
   - job_name:  Build Library Dependencies
     job_group: &Depend Dependencies
-    platform: all
   - job_depends_on: *Depend
     BUILDSYSTEM: &Build_Ninja Ninja
+    platform: x64
+    configuration: Debug
+  - job_depends_on: *Depend
+    BUILDSYSTEM: &Build_Ninja Ninja
+    platform: x86
+    configuration: Debug
+  - job_depends_on: *Depend
+    BUILDSYSTEM: &Build_Ninja Ninja
+    platform: x64
+    configuration: Release
   - job_name: Second
     job_depends_on: *Depend
     BUILDSYSTEM: &Build_Solution MSBuild_Solution
